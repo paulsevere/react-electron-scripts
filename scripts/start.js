@@ -39,7 +39,6 @@ const config = require("../config/webpack.config.dev");
 const devServerConfig = require("../config/webpackDevServer.config");
 const createWebpackCompiler = require("./utils/createWebpackCompiler");
 const addWebpackMiddleware = require("./utils/addWebpackMiddleware");
-const
 
 const useYarn = fs.existsSync(paths.yarnLockFile);
 const cli = useYarn ? "yarn" : "npm";
