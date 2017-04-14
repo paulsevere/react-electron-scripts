@@ -33,13 +33,13 @@ const WebpackDevServer = require("webpack-dev-server");
 const clearConsole = require("react-dev-utils/clearConsole");
 const checkRequiredFiles = require("react-dev-utils/checkRequiredFiles");
 const getProcessForPort = require("react-dev-utils/getProcessForPort");
-const openBrowser = require("react-dev-utils/openBrowser");
 const prompt = require("react-dev-utils/prompt");
 const paths = require("../config/paths");
 const config = require("../config/webpack.config.dev");
 const devServerConfig = require("../config/webpackDevServer.config");
 const createWebpackCompiler = require("./utils/createWebpackCompiler");
 const addWebpackMiddleware = require("./utils/addWebpackMiddleware");
+const
 
 const useYarn = fs.existsSync(paths.yarnLockFile);
 const cli = useYarn ? "yarn" : "npm";
