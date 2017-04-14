@@ -198,7 +198,7 @@ module.exports = function(
   console.log("Happy hacking!");
 };
 
-function isReactAndElectronInstalled(appPackage) {
+function isReactInstalled(appPackage) {
   const dependencies = appPackage.dependencies || {};
 
   return typeof dependencies.react !== "undefined" &&
