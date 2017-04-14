@@ -105,7 +105,7 @@ module.exports = function(
     command = "npm";
     args = ["install", "--save", verbose && "--verbose"].filter(e => e);
   }
-  args.push("react", "react-dom", "electron", "concurrently");
+  args.push("react", "react-dom");
 
   // Install additional template dependencies, if present
   const templateDependenciesPath = path.join(
@@ -152,9 +152,17 @@ module.exports = function(
   console.log();
   console.log(`Success! Created ${appName} at ${appPath}`);
   console.log("Inside that directory, you can run several commands:");
+  console.log(
+    chalk.yellow(
+      `The main electron process is started in "main_process/index.js"`
+    )
+  );
+
   console.log();
   console.log(chalk.cyan(`  ${displayedCommand} start`));
-  console.log("    Starts the development server.");
+  console.log(
+    "    Starts the development server.  The main electron process directs the webview request the client scripts from the dev server."
+  );
   console.log();
   console.log(
     chalk.cyan(`  ${displayedCommand} ${useYarn ? "" : "run "}build`)
@@ -194,6 +202,5 @@ function isReactAndElectronInstalled(appPackage) {
   const dependencies = appPackage.dependencies || {};
 
   return typeof dependencies.react !== "undefined" &&
-    typeof dependencies["react-dom"] !== "undefined" &&
-    typeof dependencies.electron !== "undefined";
+    typeof dependencies["react-dom"] !== "undefined";
 }
