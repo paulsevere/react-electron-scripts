@@ -1,5 +1,21 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: sans-serif;
+  font-family: 'Roboto Mono','Menlo', monospace;
+  padding:30px;
+  background-color:rgb(47, 50, 60);
+}
+
+
+h1 {
+  font-weight:100;
+  text-align:center;
+  font-size:50px;
+  color:rgb(150, 222, 161);
+}
+.b-text {
+  color:rgb(142, 182, 241);
+}
+.r-text {
+  color:rgb(236, 129, 129);
 }

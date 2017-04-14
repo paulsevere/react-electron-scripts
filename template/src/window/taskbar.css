@@ -1,0 +1,120 @@
+.titlebar {
+	padding: 0 3px;
+	position:fixed;
+	top:0;
+	right:0;
+	left:0;
+	margin:auto;
+}
+
+.titlebar.webkit-draggable {
+	-webkit-app-region: drag;
+}
+
+.titlebar-stoplight {
+	float: left;
+	text-align: left;
+}
+
+.titlebar:after,
+.titlebar-stoplight:after {
+	content: ' ';
+	display: table;
+	clear: both;
+}
+
+.titlebar-stoplight:hover svg,
+.titlebar-stoplight:hover svg.fullscreen-svg,
+.titlebar-stoplight:hover svg.maximize-svg {
+	opacity: 1;
+}
+
+.titlebar.alt svg.fullscreen-svg {
+	display: none;
+}
+
+.titlebar.alt svg.maximize-svg {
+	display: block;
+}
+
+.titlebar-close,
+.titlebar-minimize,
+.titlebar-fullscreen {
+	float: left;
+	width: 10px;
+	height: 10px;
+	border-radius: 50%;
+	margin: 6px 4px;
+	line-height: 0;
+}
+
+.titlebar.webkit-draggable .titlebar-close,
+.titlebar.webkit-draggable .titlebar-minimize,
+.titlebar.webkit-draggable .titlebar-fullscreen {
+	-webkit-app-region: no-drag;
+}
+
+.titlebar-close {
+	border: 1px solid rgb(236, 129, 129);
+	background-color: rgb(236, 129, 129);
+	margin-left: 6px;
+}
+
+.titlebar-close:active {
+	border-color: rgb(236, 129, 129);
+	background-color: rgb(236, 129, 129);
+}
+
+.titlebar-close svg {
+	width: 6px;
+	height: 6px;
+	margin-top: 2px;
+	margin-left: 2px;
+	opacity: 0;
+}
+
+.titlebar-minimize {
+	border: 1px solid rgb(231, 238, 147);
+	background-color: rgb(231, 238, 147);
+}
+
+.titlebar-minimize:active {
+	border-color: rgb(231, 238, 147);
+	background-color: rgb(231, 238, 147);
+}
+
+.titlebar-minimize svg {
+	width: 8px;
+	height: 8px;
+	margin-top: 1px;
+	margin-left: 1px;
+	opacity: 0;
+}
+
+.titlebar-fullscreen,
+.titlebar-maximize {
+	border: 1px solid rgb(150, 222, 161);
+	background-color: rgb(150, 222, 161);
+}
+
+.titlebar-fullscreen:active {
+	border-color: rgb(123, 203, 135);
+	background-color: rgb(123, 203, 135);
+}
+
+.titlebar-fullscreen svg.fullscreen-svg {
+	width: 6px;
+	height: 6px;
+	margin-top: 2px;
+	margin-left: 2px;
+	opacity: 0;
+}
+
+.titlebar-fullscreen svg.maximize-svg {
+	width: 8px;
+	height: 8px;
+	margin-top: 1px;
+	margin-left: 1px;
+	opacity: 0;
+	display: none;
+}

@@ -9,7 +9,6 @@
  */
 // @remove-on-eject-end
 "use strict";
-console.log("COOOOOOOL");
 
 // Makes the script crash on unhandled rejections instead of silently
 // ignoring them. In the future, promise rejections that are not handled will
@@ -33,6 +32,7 @@ const WebpackDevServer = require("webpack-dev-server");
 const clearConsole = require("react-dev-utils/clearConsole");
 const checkRequiredFiles = require("react-dev-utils/checkRequiredFiles");
 const getProcessForPort = require("react-dev-utils/getProcessForPort");
+const spawn = require("cross-spawn");
 const prompt = require("react-dev-utils/prompt");
 const paths = require("../config/paths");
 const config = require("../config/webpack.config.dev");
@@ -62,6 +62,10 @@ function run(port) {
     function onReady(showInstructions) {
       if (!showInstructions) {
         return;
+      }
+      if (!process.env.ELECTRON_LAUNCH && !process.env.ELECTRON_RUNNING) {
+        process.env.ELECTRON_RUNNING = true;
+        spawn("electron", [paths.appPath]);
       }
       console.log();
       console.log("The app is running at:");
@@ -106,17 +110,9 @@ detect(DEFAULT_PORT).then(port => {
 
   if (isInteractive) {
     clearConsole();
-    const existingProcess = getProcessForPort(DEFAULT_PORT);
-    const question = chalk.yellow(
-      `Something is already running on port ${DEFAULT_PORT}.` +
-        `${existingProcess ? ` Probably:\n  ${existingProcess}` : ""}`
-    ) + "\n\nWould you like to run the app on another port instead?";
-
-    prompt(question, true).then(shouldChangePort => {
-      if (shouldChangePort) {
-        run(port);
-      }
-    });
+    console.log(
+      chalk.red(`Something is already running on port ${DEFAULT_PORT}.`)
+    );
   } else {
     console.log(
       chalk.red(`Something is already running on port ${DEFAULT_PORT}.`)
