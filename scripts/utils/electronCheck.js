@@ -1,9 +1,16 @@
 'use strict';
 
-const { exec, execSync } = require('child_process');
+const { execSync } = require('child_process');
 const spawn = require('cross-spawn');
 const chalk = require('chalk');
 const prompt = require('react-dev-utils/prompt');
+const paths = require('../../config/paths');
+const fs = require('fs');
+
+const useYarn = fs.existsSync(paths.yarnLockFile);
+
+const elec = commandExists('electron');
+const cli = useYarn ? 'yarn' : 'npm';
 
 function handlePromptForInstall(resolve, reject) {
   return function(ans) {
@@ -23,6 +30,15 @@ function handlePromptForInstall(resolve, reject) {
       reject(null);
     }
   };
+}
+
+function commandExists(command) {
+  try {
+    execSync('which ' + command);
+  } catch (err) {
+    return false;
+  }
+  return true;
 }
 
 function electronCheck() {

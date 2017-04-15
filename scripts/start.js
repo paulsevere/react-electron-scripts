@@ -8,7 +8,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 // @remove-on-eject-end
-'use strict';
+
 
 // Makes the script crash on unhandled rejections instead of silently
 // ignoring them. In the future, promise rejections that are not handled will
@@ -30,9 +30,9 @@ const chalk = require('chalk');
 const detect = require('detect-port');
 const WebpackDevServer = require('webpack-dev-server');
 const clearConsole = require('react-dev-utils/clearConsole');
-const { exec, execSync } = require('child_process');
+const { execSync } = require('child_process');
 const checkRequiredFiles = require('react-dev-utils/checkRequiredFiles');
-const getProcessForPort = require('react-dev-utils/getProcessForPort');
+// const getProcessForPort = require('react-dev-utils/getProcessForPort');
 const spawn = require('cross-spawn');
 const prompt = require('react-dev-utils/prompt');
 const paths = require('../config/paths');

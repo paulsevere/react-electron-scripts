@@ -8,7 +8,7 @@
  * of patent rights can be found in the PATENTS file in the same directory.
  */
 // @remove-on-eject-end
-'use strict';
+
 
 process.env.NODE_ENV = 'test';
 process.env.PUBLIC_URL = '';
