@@ -27,7 +27,7 @@ module.exports = function(
   appName,
   verbose,
   originalDirectory,
-  template,
+  template
 ) {
   electronCheck().then(function() {
     const ownPackageName = require(path.join(__dirname, '..', 'package.json'))
@@ -45,19 +45,19 @@ module.exports = function(
       start: 'react-scripts start',
       build: 'react-scripts build',
       test: 'react-scripts test --env=jsdom',
-      eject: 'react-scripts eject',
+      eject: 'react-scripts eject'
     };
 
     fs.writeFileSync(
       path.join(appPath, 'package.json'),
-      JSON.stringify(appPackage, null, 2),
+      JSON.stringify(appPackage, null, 2)
     );
 
     const readmeExists = fs.existsSync(path.join(appPath, 'README.md'));
     if (readmeExists) {
       fs.renameSync(
         path.join(appPath, 'README.md'),
-        path.join(appPath, 'README.old.md'),
+        path.join(appPath, 'README.old.md')
       );
     }
 
@@ -69,7 +69,7 @@ module.exports = function(
       fs.copySync(templatePath, appPath);
     } else {
       console.error(
-        `Could not locate supplied template: ${chalk.green(templatePath)}`,
+        `Could not locate supplied template: ${chalk.green(templatePath)}`
       );
       return;
     }
@@ -91,7 +91,7 @@ module.exports = function(
             throw err;
           }
         }
-      },
+      }
     );
 
     let command;
@@ -109,7 +109,7 @@ module.exports = function(
     // Install additional template dependencies, if present
     const templateDependenciesPath = path.join(
       appPath,
-      '.template.dependencies.json',
+      '.template.dependencies.json'
     );
     if (fs.existsSync(templateDependenciesPath)) {
       const templateDependencies = require(templateDependenciesPath)
@@ -117,7 +117,7 @@ module.exports = function(
       args = args.concat(
         Object.keys(templateDependencies).map(key => {
           return `${key}@${templateDependencies[key]}`;
-        }),
+        })
       );
       fs.unlinkSync(templateDependenciesPath);
     }
@@ -156,18 +156,18 @@ module.exports = function(
     console.log('Inside that directory, you can run several commands:');
     console.log(
       chalk.yellow(
-        `The main electron process is started in "main_process/index.js"`,
-      ),
+        `The main electron process is started in "main_process/index.js"`
+      )
     );
 
     console.log();
     console.log(chalk.cyan(`  ${displayedCommand} start`));
     console.log(
-      '    Starts the development server.  The main electron process directs the webview request the client scripts from the dev server.',
+      '    Starts the development server.  The main electron process directs the webview request the client scripts from the dev server.'
     );
     console.log();
     console.log(
-      chalk.cyan(`  ${displayedCommand} ${useYarn ? '' : 'run '}build`),
+      chalk.cyan(`  ${displayedCommand} ${useYarn ? '' : 'run '}build`)
     );
     console.log('    Bundles the app into static files for production.');
     console.log();
@@ -175,13 +175,13 @@ module.exports = function(
     console.log('    Starts the test runner.');
     console.log();
     console.log(
-      chalk.cyan(`  ${displayedCommand} ${useYarn ? '' : 'run '}eject`),
+      chalk.cyan(`  ${displayedCommand} ${useYarn ? '' : 'run '}eject`)
     );
     console.log(
-      '    Removes this tool and copies build dependencies, configuration files',
+      '    Removes this tool and copies build dependencies, configuration files'
     );
     console.log(
-      '    and scripts into the app directory. If you do this, you can’t go back!',
+      '    and scripts into the app directory. If you do this, you can’t go back!'
     );
     console.log();
     console.log('We suggest that you begin by typing:');
@@ -192,8 +192,8 @@ module.exports = function(
       console.log();
       console.log(
         chalk.yellow(
-          'You had a `README.md` file, we renamed it to `README.old.md`',
-        ),
+          'You had a `README.md` file, we renamed it to `README.old.md`'
+        )
       );
     }
     console.log();
