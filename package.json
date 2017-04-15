@@ -1,6 +1,6 @@
 {
   "name": "react-electron-scripts",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Configuration and scripts for Create React App.",
   "repository": "paulsevere/electron-react-scripts",
   "license": "BSD-3-Clause",
