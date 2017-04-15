@@ -15,9 +15,7 @@ class TaskBar extends React.Component {
   toggleFullScreen = () => {
     let { fullscreen } = this.state;
     this.appWindow.setFullScreen(!fullscreen);
-    this.setState({
-      fullscreen: !fullscreen
-    });
+    this.setState({ fullscreen: !fullscreen });
   };
   minimize = () => {
     this.appWindow.minimize();
