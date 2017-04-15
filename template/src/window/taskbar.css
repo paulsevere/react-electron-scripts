@@ -5,6 +5,8 @@
 	right:0;
 	left:0;
 	margin:auto;
+	-webkit-app-region: drag;
+
 }
 
 .titlebar.webkit-draggable {
