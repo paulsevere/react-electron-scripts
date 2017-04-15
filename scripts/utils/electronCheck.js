@@ -30,7 +30,7 @@ function electronCheck() {
     if (!elec) {
       console.log(chalk.red('Electron must be installed globally'));
       prompt(chalk.green('Install now?'), true).then(
-        handlePromptForInstall(resolve, reject),
+        handlePromptForInstall(resolve, reject)
       );
     } else {
       resolve();
