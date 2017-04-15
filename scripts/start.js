@@ -30,6 +30,7 @@ const chalk = require("chalk");
 const detect = require("detect-port");
 const WebpackDevServer = require("webpack-dev-server");
 const clearConsole = require("react-dev-utils/clearConsole");
+const { exec, execSync } = require("child_process");
 const checkRequiredFiles = require("react-dev-utils/checkRequiredFiles");
 const getProcessForPort = require("react-dev-utils/getProcessForPort");
 const spawn = require("cross-spawn");
@@ -41,6 +42,8 @@ const createWebpackCompiler = require("./utils/createWebpackCompiler");
 const addWebpackMiddleware = require("./utils/addWebpackMiddleware");
 
 const useYarn = fs.existsSync(paths.yarnLockFile);
+
+const elec = commandExists("electro");
 const cli = useYarn ? "yarn" : "npm";
 const isInteractive = process.stdout.isTTY;
 
@@ -51,6 +54,37 @@ if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
 
 // Tools like Cloud9 rely on this.
 const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 3000;
+
+function electronCheck() {
+  return new Promise((resolve, reject) => {
+    if (!elec) {
+      console.log(chalk.red("Electron must be installed globally"));
+      prompt(chalk.green("Install now?"), true).then(ans => {
+        if (ans) {
+          try {
+            if (useYarn) {
+              spawn.sync(cli, ["global", "add", "electron"], {
+                stdio: "inherit"
+              });
+            } else {
+              spawn.sync(cli, ["install", "-g", "electron"], {
+                stdio: "inherit"
+              });
+            }
+          } catch (err) {
+            reject(err);
+          }
+          resolve();
+        } else {
+          console.log("Install on your own with 'npm i -g electron'");
+          reject(null);
+        }
+      });
+    } else {
+      resolve();
+    }
+  });
+}
 
 function run(port) {
   const protocol = process.env.HTTPS === "true" ? "https" : "http";
@@ -69,7 +103,6 @@ function run(port) {
       }
       console.log();
       console.log("The app is running at:");
-      console.log();
       console.log(`  ${chalk.cyan(`${protocol}://${host}:${port}/`)}`);
       console.log();
       console.log("Note that the development build is not optimized.");
@@ -104,7 +137,7 @@ function run(port) {
 // run on a different port. `detect()` Promise resolves to the next free port.
 detect(DEFAULT_PORT).then(port => {
   if (port === DEFAULT_PORT) {
-    run(port);
+    electronCheck().then(() => run(port)).catch(console.error);
     return;
   }
 
@@ -119,3 +152,12 @@ detect(DEFAULT_PORT).then(port => {
     );
   }
 });
+
+function commandExists(command) {
+  try {
+    execSync("which " + command);
+  } catch (err) {
+    return false;
+  }
+  return true;
+}
