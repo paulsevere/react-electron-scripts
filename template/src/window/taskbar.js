@@ -1,6 +1,6 @@
-import React from "react";
-import "./taskbar.css";
-const { remote } = require("electron");
+import React from 'react';
+import './taskbar.css';
+const { remote } = require('electron');
 class TaskBar extends React.Component {
   constructor(props) {
     super(props);
@@ -24,7 +24,6 @@ class TaskBar extends React.Component {
     this.appWindow.close();
   };
   render() {
-    console.log(this);
     return (
       <div className="titlebar">
         <div className="titlebar-stoplight">
