@@ -14,7 +14,7 @@
 // ignoring them. In the future, promise rejections that are not handled will
 // terminate the Node.js process with a non-zero exit code.
 process.on("unhandledRejection", err => {
-  throw err;
+    throw err;
 });
 
 process.env.NODE_ENV = "development";
@@ -23,14 +23,14 @@ process.env.NODE_ENV = "development";
 // if this file is missing. dotenv will never modify any environment variables
 // that have already been set.
 // https://github.com/motdotla/dotenv
-require("dotenv").config({ silent: true });
+require("dotenv").config({silent: true});
 
 const fs = require("fs");
 const chalk = require("chalk");
 const detect = require("detect-port");
 const WebpackDevServer = require("webpack-dev-server");
 const clearConsole = require("react-dev-utils/clearConsole");
-const { exec, execSync } = require("child_process");
+const {exec, execSync} = require("child_process");
 const checkRequiredFiles = require("react-dev-utils/checkRequiredFiles");
 const getProcessForPort = require("react-dev-utils/getProcessForPort");
 const spawn = require("cross-spawn");
@@ -44,120 +44,115 @@ const addWebpackMiddleware = require("./utils/addWebpackMiddleware");
 const useYarn = fs.existsSync(paths.yarnLockFile);
 
 const elec = commandExists("electro");
-const cli = useYarn ? "yarn" : "npm";
+const cli = useYarn
+    ? "yarn"
+    : "npm";
 const isInteractive = process.stdout.isTTY;
 
 // Warn and crash if required files are missing
 if (!checkRequiredFiles([paths.appHtml, paths.appIndexJs])) {
-  process.exit(1);
+    process.exit(1);
 }
 
 // Tools like Cloud9 rely on this.
 const DEFAULT_PORT = parseInt(process.env.PORT, 10) || 3000;
 
 function electronCheck() {
-  return new Promise((resolve, reject) => {
-    if (!elec) {
-      console.log(chalk.red("Electron must be installed globally"));
-      prompt(chalk.green("Install now?"), true).then(ans => {
-        if (ans) {
-          try {
-            if (useYarn) {
-              spawn.sync(cli, ["global", "add", "electron"], {
-                stdio: "inherit"
-              });
-            } else {
-              spawn.sync(cli, ["install", "-g", "electron"], {
-                stdio: "inherit"
-              });
-            }
-          } catch (err) {
-            reject(err);
-          }
-          resolve();
+    return new Promise((resolve, reject) => {
+        if (!elec) {
+            console.log(chalk.red("Electron must be installed globally"));
+            prompt(chalk.green("Install now?"), true).then(ans => {
+                if (ans) {
+                    try {
+                        if (useYarn) {
+                            spawn.sync(cli, [
+                                "global", "add", "electron"
+                            ], {stdio: "inherit"});
+                        } else {
+                            spawn.sync(cli, [
+                                "install", "-g", "electron"
+                            ], {stdio: "inherit"});
+                        }
+                    } catch (err) {
+                        reject(err);
+                    }
+                    resolve();
+                } else {
+                    console.log("Install on your own with 'npm i -g electron'");
+                    reject(null);
+                }
+            });
         } else {
-          console.log("Install on your own with 'npm i -g electron'");
-          reject(null);
+            resolve();
         }
-      });
-    } else {
-      resolve();
-    }
-  });
+    });
 }
 
 function run(port) {
-  const protocol = process.env.HTTPS === "true" ? "https" : "http";
-  const host = process.env.HOST || "localhost";
+    const protocol = process.env.HTTPS === "true"
+        ? "https"
+        : "http";
+    const host = process.env.HOST || "localhost";
 
-  // Create a webpack compiler that is configured with custom messages.
-  const compiler = createWebpackCompiler(
-    config,
-    function onReady(showInstructions) {
-      if (!showInstructions) {
-        return;
-      }
-      if (!process.env.ELECTRON_LAUNCH && !process.env.ELECTRON_RUNNING) {
-        process.env.ELECTRON_RUNNING = true;
-        spawn("electron", [paths.appPath]);
-      }
-      console.log();
-      console.log("The app is running at:");
-      console.log(`  ${chalk.cyan(`${protocol}://${host}:${port}/`)}`);
-      console.log();
-      console.log("Note that the development build is not optimized.");
-      console.log(
-        `To create a production build, use ${chalk.cyan(`${cli} run build`)}.`
-      );
-      console.log();
-    }
-  );
+    // Create a webpack compiler that is configured with custom messages.
+    const compiler = createWebpackCompiler(config, function onReady(showInstructions) {
+        if (!showInstructions) {
+            return;
+        }
+        if (!process.env.ELECTRON_LAUNCH && !process.env.ELECTRON_RUNNING) {
+            process.env.ELECTRON_RUNNING = true;
+            spawn("electron", [paths.appPath]);
+        }
+        console.log();
+        console.log("The app is running at:");
+        console.log(`  ${chalk.cyan(`${protocol}://${host}:${port}/`)}`);
+        console.log();
+        console.log("Note that the development build is not optimized.");
+        console.log(`To create a production build, use ${chalk.cyan(`${cli} run build`)}.`);
+        console.log();
+    });
 
-  // Serve webpack assets generated by the compiler over a web sever.
-  const devServer = new WebpackDevServer(compiler, devServerConfig);
+    // Serve webpack assets generated by the compiler over a web sever.
+    const devServer = new WebpackDevServer(compiler, devServerConfig);
 
-  // Our custom middleware proxies requests to /index.html or a remote API.
-  addWebpackMiddleware(devServer);
+    // Our custom middleware proxies requests to /index.html or a remote API.
+    addWebpackMiddleware(devServer);
 
-  // Launch WebpackDevServer.
-  devServer.listen(port, err => {
-    if (err) {
-      return console.log(err);
-    }
+    // Launch WebpackDevServer.
+    devServer.listen(port, err => {
+        if (err) {
+            return console.log(err);
+        }
 
-    if (isInteractive) {
-      clearConsole();
-    }
-    console.log(chalk.cyan("Starting the development server..."));
-    console.log();
-  });
+        if (isInteractive) {
+            clearConsole();
+        }
+        console.log(chalk.cyan("Starting the development server..."));
+        console.log();
+    });
 }
 
 // We attempt to use the default port but if it is busy, we offer the user to
 // run on a different port. `detect()` Promise resolves to the next free port.
 detect(DEFAULT_PORT).then(port => {
-  if (port === DEFAULT_PORT) {
-    electronCheck().then(() => run(port)).catch(console.error);
-    return;
-  }
+    if (port === DEFAULT_PORT) {
+        electronCheck().then(() => run(port)).catch(console.error);
+        return;
+    }
 
-  if (isInteractive) {
-    clearConsole();
-    console.log(
-      chalk.red(`Something is already running on port ${DEFAULT_PORT}.`)
-    );
-  } else {
-    console.log(
-      chalk.red(`Something is already running on port ${DEFAULT_PORT}.`)
-    );
-  }
+    if (isInteractive) {
+        clearConsole();
+        console.log(chalk.red(`Something is already running on port ${DEFAULT_PORT}.`));
+    } else {
+        console.log(chalk.red(`Something is already running on port ${DEFAULT_PORT}.`));
+    }
 });
 
 function commandExists(command) {
-  try {
-    execSync("which " + command);
-  } catch (err) {
-    return false;
-  }
-  return true;
+    try {
+        execSync("which " + command);
+    } catch (err) {
+        return false;
+    }
+    return true;
 }
